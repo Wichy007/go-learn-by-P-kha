@@ -1,82 +1,40 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
+	"time"
 )
 
-type Address struct {
-	Address  string
-	Postcode string
+func Ping1S(c chan string) {
+	time.Sleep(1 * time.Second)
+	// fmt.Println("success form 1 s")
+
+	c <- "success from 1 s"
+
 }
 
-type UserProfile struct {
-	FirstName string `json: firstname`
-	LastName  string `json: lastname`
-	Age       int
-	Height    float32
-	Address   Address
-	// nested struct use anonymous struct
-	Bill struct {
-		BillAddress string
-	}
-}
+func Ping5S(ch chan string) {
+	time.Sleep(5 * time.Second)
+	// fmt.Println("success form 5 s")
 
-func (u UserProfile) GetCustomerName() string {
-	return fmt.Sprintf("Hello Mr. %s %s", u.FirstName, u.LastName)
+	ch <- "success from 5 s"
+
 }
 
 func main() {
-	user := map[string]string{}
+	start := time.Now()
+	// time.Sleep(5 * time.Second)
 
-	user["username"] = "wichy"
-	user["password"] = "password"
+	c := make(chan string)
+	ch := make(chan string)
 
-	fmt.Println(user)
-	fmt.Println(user["username"])
+	go Ping1S(c)
+	go Ping5S(ch)
 
-	userProfile := UserProfile{
-		FirstName: "wichy",
-		LastName:  "password",
-		Age:       27,
-		Height:    12.32,
-	}
-	fmt.Println(userProfile)
+	fromPing1S, fromPing5S := <-c, <-ch
+	fmt.Println(fromPing1S)
+	fmt.Println(fromPing5S)
 
-	fmt.Println(userProfile.GetCustomerName())
-
-	//json Marshal and Unmarshal
-	// byteTxtJsom, err := json.Marshal(userProfile)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
-	// formatedTxtJsom, err := json.MarshalIndent(userProfile, "this parmeter for prefix in ever row", "this parameter for space prefix in every child")
-	formatedTxtJsom, err := json.MarshalIndent(userProfile, "", "    ")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Println(string(formatedTxtJsom))
-
-	dataJson := `{
-		"FirstName": "twin",
-		"LastName": "Sombut",
-		"Age": 32,
-		"Height": 12.32,
-		"Address": {
-			"Address": "",
-			"Postcode": ""
-		},
-		"Bill": {
-			"BillAddress": ""
-		}
-	}`
-
-	var ProofProfile UserProfile
-	err = json.Unmarshal([]byte(dataJson), &ProofProfile)
-
-	fmt.Println(ProofProfile)
-	fmt.Println(ProofProfile.GetCustomerName())
+	fmt.Println(time.Since(start))
 
 }
