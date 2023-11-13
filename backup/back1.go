@@ -1,4 +1,4 @@
-package back1
+package main
 
 func back() {
 

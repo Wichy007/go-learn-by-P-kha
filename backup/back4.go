@@ -1,4 +1,4 @@
-package back4
+package main
 
 import (
 	"encoding/json"
@@ -11,8 +11,8 @@ type Address struct {
 }
 
 type UserProfile struct {
-	FirstName string `json: firstname`
-	LastName  string `json: lastname`
+	FirstName string `json:"firstname"`
+	LastName  string `json:"lastname"`
 	Age       int
 	Height    float32
 	Address   Address

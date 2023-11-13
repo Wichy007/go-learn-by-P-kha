@@ -1,6 +1,9 @@
-package back5
+package main
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 type SaveLogInterface interface {
 	SaveLog()
@@ -15,8 +18,9 @@ type TransferBBL struct {
 }
 
 func (tBBl *TransferBBL) SaveLog() {
-	tBBl.name = "test"
 	fmt.Println("save to database", tBBl.name)
+	fmt.Println(tBBl)
+	tBBl.name = "test change name with pointer"
 
 }
 
@@ -26,14 +30,20 @@ type TransferKTB struct {
 
 func (tKTB TransferKTB) SaveLog() {
 	fmt.Println("save to database", tKTB.name)
+	tKTB.name = "test change name without pointer"
 
 }
 
-func back5() {
+func main() {
 	transA := TransferBBL{name: "BBL"}
 	transB := TransferKTB{name: "KTB"}
 	SaveLog(&transA)
 	SaveLog(transB)
 
 	fmt.Println(transA)
+	fmt.Println(transB)
+
+	var a int
+
+	fmt.Println(reflect.TypeOf(&a))
 }

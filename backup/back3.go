@@ -1,4 +1,4 @@
-package back3
+package main
 
 import "fmt"
 

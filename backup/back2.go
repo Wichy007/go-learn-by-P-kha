@@ -1,4 +1,4 @@
-package back2
+package main
 
 import (
 	"fmt"
@@ -52,5 +52,5 @@ func Back2() {
 	Getmember()
 	var username string
 	// fmt.Scan(&username)
-	checkLogin(username, "password")
+	CheckLogin(username, "password")
 }

@@ -21,7 +21,7 @@ func Ping5S(ch chan string) {
 
 }
 
-func main() {
+func back6() {
 	start := time.Now()
 	// time.Sleep(5 * time.Second)
 
